@@ -19,8 +19,8 @@ class Deploy{
                     jenkins.echo "Deploy Step"
 
                     jenkins.withKubeConfig([
-                        credentialsId: '',
-                        serverUrl: 'http://127.0.0.1',
+                        credentialsId: 'minikube-user',
+                        serverUrl: 'http://127.0.0.1:8443',
                     ]) {
                         jenkins.sh label: 'Deploy on minikube 🚀', script:"""
                             helm package \${HELM_CHART_NAME} &&
