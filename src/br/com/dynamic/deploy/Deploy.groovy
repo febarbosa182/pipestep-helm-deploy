@@ -12,7 +12,7 @@ class Deploy{
                 claimName: "pvc-${jenkins.env.JENKINS_AGENT_NAME}",
                 readOnly: false
             ),
-            jenkins.hostNetwork: true
+            jenkins.hostNetwork: 'true'
         )
         {
             jenkins.node(jenkins.POD_LABEL){
