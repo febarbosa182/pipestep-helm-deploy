@@ -1,4 +1,4 @@
-package br.com.dynamic.deploy_dev
+package br.com.dynamic.deploy
 
 class Deploy{
     def call (jenkins, jobParams) {
