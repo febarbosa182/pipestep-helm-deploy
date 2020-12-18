@@ -1,7 +1,7 @@
 package br.com.dynamic.deploy
 
 class Deploy{
-    def call (jenkins, jobParams) {
+    def call (jenkins) {
 
         jenkins.podTemplate(
             containers: [
