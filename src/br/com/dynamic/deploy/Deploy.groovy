@@ -1,5 +1,7 @@
 package br.com.dynamic.deploy
 
+import br.com.dynamic.deploy.CreateCredential
+
 class Deploy{
     def call (jenkins) {
 
@@ -11,13 +13,20 @@ class Deploy{
             workspaceVolume: jenkins.persistentVolumeClaimWorkspaceVolume(
                 claimName: "pvc-${jenkins.env.JENKINS_AGENT_NAME}",
                 readOnly: false
-            ),
-            hostNetwork: true
+            )
         )
         {
             jenkins.node(jenkins.POD_LABEL){
                 jenkins.container('helm'){
                     jenkins.echo "Deploy Step"
+                    // INTERNAL API SERVER 
+                    env.APISERVER="https://kubernetes.default.svc"
+                    // DEFAULT POD SERVICEACCOUNT 
+                    env.SERVICEACCOUNT="/var/run/secrets/kubernetes.io/serviceaccount"
+                    // DEFAULT POD TOKEN 
+                    env.TOKEN=sh script:"cat ${env.SERVICEACCOUNT}/token", returnStdout: true
+                    
+                    CreateCredential.createCredential(env.TOKEN)
 
                     jenkins.withKubeConfig([
                         credentialsId: 'minikube-user',
