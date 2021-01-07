@@ -1,8 +1,6 @@
 package br.com.dynamic.deploy
 
 class Deploy{
-    String credentialId = "minikube-user"
-    String credentialDescription = "User for pipeline demo"
 
     def call (jenkins) {
 
@@ -21,7 +19,7 @@ class Deploy{
                 jenkins.container('helm'){
                     jenkins.echo "Deploy Step"
                     jenkins.withKubeConfig([
-                        credentialsId: credentialId,
+                        credentialsId: "minikube-user",
                         serverUrl: 'https://kubernetes.default.svc/api',
                     ]) {
                         jenkins.sh label: 'Deploy on minikube 🚀', script:"""
