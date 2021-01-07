@@ -19,8 +19,6 @@ class Deploy{
             jenkins.node(jenkins.POD_LABEL){
                 jenkins.container('helm'){
                     jenkins.echo "Deploy Step"
-                    // INTERNAL API SERVER 
-                    jenkins.env.APISERVER="https://kubernetes.default.svc"
                     // DEFAULT POD SERVICEACCOUNT 
                     jenkins.env.SERVICEACCOUNT="/var/run/secrets/kubernetes.io/serviceaccount"
                     // DEFAULT POD TOKEN 
@@ -29,8 +27,8 @@ class Deploy{
                     CreateCredential.createCredential(jenkins.env.TOKEN)
 
                     jenkins.withKubeConfig([
-                        credentialsId: 'minikube-user',
-                        serverUrl: "${jenkins.env.APISERVER}/api",
+                        credentialsId: "minikube-user",
+                        serverUrl: 'https://kubernetes.default.svc/api',
                     ]) {
                         jenkins.sh label: 'Deploy on minikube 🚀', script:"""
                             helm package \${HELM_CHART_NAME} &&
