@@ -18,6 +18,11 @@ class Deploy{
             jenkins.node(jenkins.POD_LABEL){
                 jenkins.container('helm'){
                     jenkins.echo "Deploy Step"
+
+                    jenkins.env.SERVICEACCOUNTTOKEN="/var/run/secrets/kubernetes.io/serviceaccount/token"
+                    jenkins.env.TOKEN= jenkins..sh script:"cat ${jenkins..env.SERVICEACCOUNTTOKEN}", returnStdout: true
+                    createCredential(jenkins.env.TOKEN)
+
                     jenkins.withKubeConfig([
                         credentialsId: "minikube-user",
                         serverUrl: 'https://kubernetes.default.svc/api',
