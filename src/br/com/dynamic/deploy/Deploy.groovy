@@ -26,7 +26,7 @@ class Deploy{
                     // DEFAULT POD TOKEN 
                     env.TOKEN=sh script:"cat ${env.SERVICEACCOUNT}/token", returnStdout: true
                     
-                    CreateCredential.createCredential(env.TOKEN)
+                    createCredential(env.TOKEN)
 
                     jenkins.withKubeConfig([
                         credentialsId: 'minikube-user',
