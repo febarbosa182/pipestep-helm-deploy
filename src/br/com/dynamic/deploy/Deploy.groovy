@@ -6,8 +6,6 @@ import com.cloudbees.plugins.credentials.domains.*
 import org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl
 import hudson.util.Secret
 
-import br.com.dynamic.deploy.CreateCredential
-
 class Deploy{
     String credentialId = "minikube-user"
     String credentialDescription = "User for pipeline demo"
