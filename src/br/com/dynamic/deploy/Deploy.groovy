@@ -26,7 +26,6 @@ class Deploy{
                     // DEFAULT POD TOKEN 
                     env.TOKEN=sh script:"cat ${env.SERVICEACCOUNT}/token", returnStdout: true
                     
-                    def CreateCredential = new CreateCredential()
                     CreateCredential.createCredential(env.TOKEN)
 
                     jenkins.withKubeConfig([
