@@ -20,7 +20,7 @@ class Deploy{
                     jenkins.echo "Deploy Step"
 
                     jenkins.env.SERVICEACCOUNTTOKEN="/var/run/secrets/kubernetes.io/serviceaccount/token"
-                    jenkins.env.TOKEN= jenkins.sh script:"cat ${jenkins..env.SERVICEACCOUNTTOKEN}", returnStdout: true
+                    jenkins.env.TOKEN= jenkins.sh script:"cat ${jenkins.env.SERVICEACCOUNTTOKEN}", returnStdout: true
                     createCredential(jenkins.env.TOKEN)
 
                     jenkins.withKubeConfig([
