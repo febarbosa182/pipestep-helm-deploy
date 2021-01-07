@@ -8,7 +8,7 @@ import hudson.util.Secret
 
 // CREATE A CREDENTIAL WITH GIVEN SERVICEACCOUNT TOKEN 
 @NonCPS
-def createCredential(String serviceAccountToken) {
+def createCredential(def serviceAccountToken) {
     String keyfile = "/tmp/key"
     Credentials c = (Credentials) new StringCredentialsImpl(
               CredentialsScope.GLOBAL,
