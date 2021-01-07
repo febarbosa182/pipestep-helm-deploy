@@ -30,7 +30,7 @@ class Deploy{
 
                     jenkins.withKubeConfig([
                         credentialsId: 'minikube-user',
-                        serverUrl: 'https://host.minikube.internal:32776',
+                        serverUrl: "${env.APISERVER}/api",
                     ]) {
                         jenkins.sh label: 'Deploy on minikube 🚀', script:"""
                             helm package \${HELM_CHART_NAME} &&
