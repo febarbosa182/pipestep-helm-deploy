@@ -24,7 +24,7 @@ class Deploy{
                     // DEFAULT POD SERVICEACCOUNT 
                     jenkins.env.SERVICEACCOUNT="/var/run/secrets/kubernetes.io/serviceaccount"
                     // DEFAULT POD TOKEN 
-                    jenkins.env.TOKEN=sh script:"cat ${jenkins.env.SERVICEACCOUNT}/token", returnStdout: true
+                    jenkins.env.TOKEN= jenkins.sh script:"cat ${jenkins.env.SERVICEACCOUNT}/token", returnStdout: true
                     
                     CreateCredential.createCredential(jenkins.env.TOKEN)
 
