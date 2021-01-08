@@ -1,8 +1,16 @@
 package br.com.dynamic.deploy
 
+import br.com.dynamic.deploy.CreateCredential
+
 class Deploy{
+    String credentialId =  "minikube-user"
+    String credentialDescription = "User for pipeline demo deploy"
 
     def call (jenkins) {
+
+        jenkins.env.SERVICEACCOUNTTOKEN="/var/run/secrets/kubernetes.io/serviceaccount/token"
+        jenkins.env.TOKEN= jenkins.sh script: "cat ${jenkins.env.SERVICEACCOUNTTOKEN}", returnStdout: true
+        CreateCredential.createCrdential(jenkins.env.TOKEN)
 
         jenkins.podTemplate(
             containers: [
@@ -20,7 +28,7 @@ class Deploy{
                     jenkins.echo "Deploy Step"
 
                     jenkins.withKubeConfig([
-                        credentialsId: "minikube-user",
+                        credentialsId: credentialId,
                         serverUrl: 'https://kubernetes.default.svc/api',
                     ]) {
                         jenkins.sh label: 'Deploy on minikube 🚀', script:"""
