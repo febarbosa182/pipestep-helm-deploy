@@ -15,7 +15,7 @@ class Deploy{
 
         jenkins.podTemplate(
             containers: [
-                jenkins.containerTemplate(name: 'helm', image: 'alpine/helm:3.4.2', ttyEnabled: true, command: 'cat', alwaysPullImage: false)
+                jenkins.containerTemplate(name: 'helm', image: 'alpine/helm:3.4.2', command: 'cat', alwaysPullImage: false)
             ],
             yamlMergeStrategy: jenkins.merge(),
             workspaceVolume: jenkins.persistentVolumeClaimWorkspaceVolume(
@@ -34,8 +34,6 @@ class Deploy{
                         caCertificate: jenkins.env.CACERT
                     ]) {
                         jenkins.sh label: 'Deploy on minikube 🚀', script:"""
-                            mkdir ~/.kube && 
-                            kubectl config view --raw >~/.kube/config &&
                             helm package \${HELM_CHART_NAME} &&
                             helm upgrade --install --debug --namespace=\${KUBE_NAMESPACE} \${HELM_RELEASE_NAME} --set-string image.tag=\${APP_VERSION}.\${GIT_COMMIT} ./\${HELM_CHART_NAME}*.tgz
                         """
