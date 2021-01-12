@@ -7,8 +7,9 @@ class Deploy{
     String credentialDescription = "User for pipeline demo deploy"
 
     def call (jenkins) {
-
-        jenkins.env.SERVICEACCOUNTTOKEN="/var/run/secrets/kubernetes.io/serviceaccount/token"
+        jenkins.env.SERVICEACCOUNT="/var/run/secrets/kubernetes.io/serviceaccount"
+        jenkins.env.SERVICEACCOUNTTOKEN="${jenkins.env.SERVICEACCOUNT}/token"
+        jenkins.env.CACERT="cat ${jenkins.env.SERVICEACCOUNT}/ca.crt", returnStdout: true
         jenkins.env.TOKEN= jenkins.sh script: "cat ${jenkins.env.SERVICEACCOUNTTOKEN}", returnStdout: true
         CreateCredential.createSecretText(jenkins.env.TOKEN, credentialId, credentialDescription)
 
@@ -30,6 +31,7 @@ class Deploy{
                     jenkins.withKubeConfig([
                         credentialsId: credentialId,
                         serverUrl: 'https://kubernetes.default.svc/api',
+                        caCertificate: jenkins.env.CACERT
                     ]) {
                         jenkins.sh label: 'Deploy on minikube 🚀', script:"""
                             helm package \${HELM_CHART_NAME} &&
