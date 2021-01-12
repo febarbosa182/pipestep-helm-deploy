@@ -9,7 +9,7 @@ class Deploy{
     def call (jenkins) {
         jenkins.env.SERVICEACCOUNT="/var/run/secrets/kubernetes.io/serviceaccount"
         jenkins.env.SERVICEACCOUNTTOKEN="${jenkins.env.SERVICEACCOUNT}/token"
-        jenkins.env.CACERT="cat ${jenkins.env.SERVICEACCOUNT}/ca.crt", returnStdout: true
+        jenkins.env.CACERT= jenkins.sh script: "cat ${jenkins.env.SERVICEACCOUNT}/ca.crt", returnStdout: true
         jenkins.env.TOKEN= jenkins.sh script: "cat ${jenkins.env.SERVICEACCOUNTTOKEN}", returnStdout: true
         CreateCredential.createSecretText(jenkins.env.TOKEN, credentialId, credentialDescription)
 
