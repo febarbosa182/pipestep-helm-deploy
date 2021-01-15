@@ -36,7 +36,7 @@ class Deploy{
                         jenkins.sh label: 'Deploy on minikube 🚀', script:"""
                             cat \${KUBECONFIG} &&
                             helm package \${HELM_CHART_NAME} &&
-                            helm upgrade --install --namespace=\${KUBE_NAMESPACE} \${HELM_RELEASE_NAME} --set-string image.tag=\${APP_VERSION}.\${GIT_COMMIT} ./\${HELM_CHART_NAME}*.tgz
+                            helm upgrade --install --kubeconfig=\${KUBECONFIG} --kube-apiserver='https://kubernetes.default.svc/api' --namespace=\${KUBE_NAMESPACE} \${HELM_RELEASE_NAME} --set-string image.tag=\${APP_VERSION}.\${GIT_COMMIT} ./\${HELM_CHART_NAME}*.tgz
                         """
                     }
 
