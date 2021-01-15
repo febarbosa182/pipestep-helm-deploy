@@ -31,7 +31,7 @@ class Deploy{
                     jenkins.withKubeConfig([
                         credentialsId: credentialId,
                         serverUrl: 'https://kubernetes.default.svc/api',
-                        caCertificate: jenkins.env.CACERT
+                        // caCertificate: jenkins.env.CACERT
                     ]) {
                         jenkins.sh label: 'Deploy on minikube 🚀', script:"""
                             cat \${KUBECONFIG} &&
