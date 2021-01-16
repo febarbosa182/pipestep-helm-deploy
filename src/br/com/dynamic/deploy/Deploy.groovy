@@ -35,7 +35,7 @@ class Deploy{
                     ]) {
                         jenkins.sh label: 'Deploy on minikube 🚀', script:"""
                             helm package \${HELM_CHART_NAME} &&
-                            helm upgrade --install --kubeconfig=\${KUBECONFIG} --namespace=\${KUBE_NAMESPACE} \${HELM_RELEASE_NAME} --set-string image.tag=\${APP_VERSION}.\${GIT_COMMIT} ./\${HELM_CHART_NAME}*.tgz --force
+                            helm upgrade --install --kubeconfig=\${KUBECONFIG} --namespace=\${KUBE_NAMESPACE} \${HELM_RELEASE_NAME} --set-string image.tag=\${APP_VERSION}.\${GIT_COMMIT} ./\${HELM_CHART_NAME}*.tgz --force -v 20
                         """
                     }
 
