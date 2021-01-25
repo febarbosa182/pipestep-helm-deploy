@@ -9,8 +9,8 @@ class Deploy{
     def call (jenkins) {
         jenkins.env.SERVICEACCOUNT="/var/run/secrets/kubernetes.io/serviceaccount"
         jenkins.env.SERVICEACCOUNTTOKEN="${jenkins.env.SERVICEACCOUNT}/token"
-        jenkins.env.CACERT= jenkins.sh script: "cat ${jenkins.env.SERVICEACCOUNT}/ca.crt", returnStdout: true
-        jenkins.env.TOKEN= jenkins.sh script: "cat ${jenkins.env.SERVICEACCOUNTTOKEN}", returnStdout: true
+        jenkins.env.CACERT= jenkins.sh script: "cat ${jenkins.env.SERVICEACCOUNT}/ca.crt", returnStdout: true, label: "Get Cluster CA certificate"
+        jenkins.env.TOKEN= jenkins.sh script: "cat ${jenkins.env.SERVICEACCOUNTTOKEN}", returnStdout: true, label: "Get service account token"
         CreateCredential.createSecretText(jenkins.env.TOKEN, credentialId, credentialDescription)
 
         jenkins.podTemplate(
@@ -30,12 +30,12 @@ class Deploy{
 
                     jenkins.withKubeConfig([
                         credentialsId: credentialId,
-                        serverUrl: 'https://kubernetes.default.svc/api',
+                        serverUrl: 'https://kubernetes.default.svc',
                         // caCertificate: jenkins.env.CACERT
                     ]) {
+                        jenkins.sh label: 'Pac helm chart', script: "helm package \${HELM_CHART_NAME}"
                         jenkins.sh label: 'Deploy on minikube 🚀', script:"""
-                            helm package \${HELM_CHART_NAME} &&
-                            helm upgrade --install --kubeconfig=\${KUBECONFIG} --namespace=\${KUBE_NAMESPACE} \${HELM_RELEASE_NAME} --set-string image.tag=\${APP_VERSION}.\${GIT_COMMIT} ./\${HELM_CHART_NAME}*.tgz --force -v 20
+                            helm upgrade --install --kubeconfig=\${KUBECONFIG} --namespace=\${KUBE_NAMESPACE} \${HELM_RELEASE_NAME} --set-string image.tag=\${APP_VERSION}.\${GIT_COMMIT} ./\${HELM_CHART_NAME}*.tgz
                         """
                     }
 
