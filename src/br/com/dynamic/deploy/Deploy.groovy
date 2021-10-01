@@ -3,7 +3,7 @@ package br.com.dynamic.deploy
 import br.com.dynamic.deploy.CreateCredential
 
 class Deploy{
-    String credentialId =  "minikube-user"
+    String credentialId =  "jenkins"
     String credentialDescription = "User for pipeline demo deploy"
 
     def call (jenkins) {
@@ -35,7 +35,7 @@ class Deploy{
                     ]) {
                         jenkins.sh label: 'Pac helm chart', script: "helm package \${HELM_CHART_NAME}"
                         jenkins.sh label: 'Deploy on minikube 🚀', script:"""
-                            helm upgrade --install --kubeconfig=\${KUBECONFIG} --namespace=\${KUBE_NAMESPACE} \${HELM_RELEASE_NAME} --set-string image.tag=\${APP_VERSION}.\${GIT_COMMIT} ./\${HELM_CHART_NAME}*.tgz
+                            helm upgrade --install --kubeconfig=\${KUBECONFIG} --namespace=\${KUBE_NAMESPACE} \${HELM_RELEASE_NAME} ./\${HELM_CHART_NAME}
                         """
                     }
 
