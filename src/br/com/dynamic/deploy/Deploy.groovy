@@ -35,7 +35,7 @@ class Deploy{
                     ]) {
                         jenkins.sh label: 'Pac helm chart', script: "helm package \${HELM_CHART_NAME}"
                         jenkins.sh label: 'Deploy on minikube 🚀', script:"""
-                            helm upgrade --install --kubeconfig=\${KUBECONFIG} --namespace=\${KUBE_NAMESPACE} \${HELM_RELEASE_NAME} ./\${HELM_CHART_NAME}
+                            helm upgrade --install --kubeconfig=\${KUBECONFIG} --namespace=\${KUBE_NAMESPACE} \${HELM_RELEASE_NAME} ./\${HELM_CHART_NAME}*.tgz
                         """
                     }
 
