@@ -1,6 +1,6 @@
-package br.com.dynamic.deploy
+package dynamic.deploy
 
-import br.com.dynamic.deploy.CreateCredential
+import dynamic.deploy.CreateCredential
 
 class Deploy{
     String credentialId =  "minikube-user"

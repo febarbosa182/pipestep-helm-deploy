@@ -1,4 +1,4 @@
-package br.com.dynamic.deploy
+package dynamic.deploy
 
 import com.cloudbees.plugins.credentials.impl.*
 import com.cloudbees.plugins.credentials.*
