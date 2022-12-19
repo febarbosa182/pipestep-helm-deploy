@@ -15,13 +15,14 @@ class Deploy{
 
         jenkins.podTemplate(
             containers: [
-                jenkins.containerTemplate(name: 'helm', image: 'alpine/helm:3.5.0', ttyEnabled: true, command: 'cat', alwaysPullImage: false)
+                jenkins.containerTemplate(name: 'helm', image: 'alpine/helm:3.10', ttyEnabled: true, command: 'cat', alwaysPullImage: false)
             ],
             yamlMergeStrategy: jenkins.merge(),
             workspaceVolume: jenkins.persistentVolumeClaimWorkspaceVolume(
                 claimName: "pvc-workspace-${jenkins.env.JENKINS_AGENT_NAME}",
                 readOnly: false
-            )
+            ),
+            serviceAccount: 'pipeline-deploy'
         )
         {
             jenkins.node(jenkins.POD_LABEL){
