@@ -15,7 +15,7 @@ class Deploy{
 
         jenkins.podTemplate(
             containers: [
-                jenkins.containerTemplate(name: 'helm', image: 'alpine/helm:3.10', ttyEnabled: true, command: 'cat', alwaysPullImage: false)
+                jenkins.containerTemplate(name: 'helm', image: 'alpine/helm:3.10.2', ttyEnabled: true, command: 'cat', alwaysPullImage: false)
             ],
             yamlMergeStrategy: jenkins.merge(),
             workspaceVolume: jenkins.persistentVolumeClaimWorkspaceVolume(
