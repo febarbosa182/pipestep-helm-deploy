@@ -29,7 +29,11 @@ class Deploy{
                 jenkins.container('helm'){
                     jenkins.echo "Deploy Step"
 
-                    jenkins.withKubeConfig() {
+                    jenkins.withKubeConfig([
+                        credentialsId: credentialId,
+                        serverUrl: 'http://kubernetes.default.svc',
+                        // caCertificate: jenkins.env.CACERT
+                    ]) {
                         jenkins.sh label: 'Pac helm chart', script: "helm package \${HELM_CHART_NAME}"
                         jenkins.sh label: 'Deploy on minikube 🚀', script:"""
                             helm upgrade --install --kubeconfig=\${KUBECONFIG} --namespace=\${KUBE_NAMESPACE} \${HELM_RELEASE_NAME} --set-string image.tag=\${APP_VERSION}.\${GIT_COMMIT} ./\${HELM_CHART_NAME}*.tgz
