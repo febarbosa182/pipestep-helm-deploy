@@ -30,7 +30,7 @@ class Deploy{
                     jenkins.echo "Deploy Step"
 
                     jenkins.withKubeConfig([
-                        credentialsId: credentialId,
+                        // credentialsId: credentialId,
                         serverUrl: 'https://kubernetes.default.svc:443',
                         // caCertificate: jenkins.env.CACERT
                     ]) {
