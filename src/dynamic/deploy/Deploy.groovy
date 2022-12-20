@@ -30,7 +30,7 @@ class Deploy{
                     jenkins.echo "Deploy Step"
 
                     jenkins.withKubeConfig([
-                        serverUrl: 'https://kubernetes.default.svc:443'
+                        serverUrl: 'http://kubernetes.default.svc:443'
                     ]) {
                         jenkins.sh label: 'Pac helm chart', script: "helm package \${HELM_CHART_NAME}"
                         jenkins.sh label: 'Deploy on minikube 🚀', script:"""
