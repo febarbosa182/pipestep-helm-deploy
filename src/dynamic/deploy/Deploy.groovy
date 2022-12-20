@@ -3,15 +3,15 @@ package dynamic.deploy
 import dynamic.deploy.CreateCredential
 
 class Deploy{
-    String credentialId =  "minikube-user"
-    String credentialDescription = "User for pipeline demo deploy"
+    // String credentialId =  "minikube-user"
+    // String credentialDescription = "User for pipeline demo deploy"
 
     def call (jenkins) {
-        jenkins.env.SERVICEACCOUNT="/var/run/secrets/kubernetes.io/serviceaccount"
-        jenkins.env.SERVICEACCOUNTTOKEN="${jenkins.env.SERVICEACCOUNT}/token"
-        jenkins.env.CACERT= jenkins.sh script: "cat ${jenkins.env.SERVICEACCOUNT}/ca.crt", returnStdout: true, label: "Get Cluster CA certificate"
-        jenkins.env.TOKEN= jenkins.sh script: "cat ${jenkins.env.SERVICEACCOUNTTOKEN}", returnStdout: true, label: "Get service account token"
-        CreateCredential.createSecretText(jenkins.env.TOKEN, credentialId, credentialDescription)
+        // jenkins.env.SERVICEACCOUNT="/var/run/secrets/kubernetes.io/serviceaccount"
+        // jenkins.env.SERVICEACCOUNTTOKEN="${jenkins.env.SERVICEACCOUNT}/token"
+        // jenkins.env.CACERT= jenkins.sh script: "cat ${jenkins.env.SERVICEACCOUNT}/ca.crt", returnStdout: true, label: "Get Cluster CA certificate"
+        // jenkins.env.TOKEN= jenkins.sh script: "cat ${jenkins.env.SERVICEACCOUNTTOKEN}", returnStdout: true, label: "Get service account token"
+        // CreateCredential.createSecretText(jenkins.env.TOKEN, credentialId, credentialDescription)
 
         jenkins.podTemplate(
             containers: [
@@ -30,9 +30,7 @@ class Deploy{
                     jenkins.echo "Deploy Step"
 
                     jenkins.withKubeConfig([
-                        // credentialsId: credentialId,
-                        serverUrl: 'https://kubernetes.default.svc:443',
-                        // caCertificate: jenkins.env.CACERT
+                        serverUrl: 'https://kubernetes.default.svc:443'
                     ]) {
                         jenkins.sh label: 'Pac helm chart', script: "helm package \${HELM_CHART_NAME}"
                         jenkins.sh label: 'Deploy on minikube 🚀', script:"""
