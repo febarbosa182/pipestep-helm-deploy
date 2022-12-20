@@ -31,7 +31,7 @@ class Deploy{
 
                     jenkins.withKubeConfig([
                         credentialsId: credentialId,
-                        serverUrl: 'http://kubernetes.default.svc',
+                        serverUrl: 'https://kubernetes.default.svc:443',
                         // caCertificate: jenkins.env.CACERT
                     ]) {
                         jenkins.sh label: 'Pac helm chart', script: "helm package \${HELM_CHART_NAME}"
