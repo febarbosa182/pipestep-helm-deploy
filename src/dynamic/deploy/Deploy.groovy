@@ -31,7 +31,7 @@ class Deploy{
 
                     jenkins.withKubeConfig([
                         credentialsId: credentialId,
-                        serverUrl: 'http://kubernetes.default.svc:443'
+                        serverUrl: 'https://kubernetes.default.svc:443'
                     ]) {
                         jenkins.sh label: 'Pac helm chart', script: "helm package \${HELM_CHART_NAME}"
                         jenkins.sh label: 'Deploy on minikube 🚀', script:"""
